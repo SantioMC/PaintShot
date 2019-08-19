@@ -6,6 +6,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
@@ -79,6 +81,15 @@ public final class PaintShot extends JavaPlugin implements Listener {
         event.setQuitMessage(ChatColor.DARK_GRAY+"["+ChatColor.RED+"-"+ChatColor.DARK_GRAY+"]"+ChatColor.AQUA+" "+player.getDisplayName());
     }
 
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+        if (event.getView().getTitle().equalsIgnoreCase(ChatColor.RED+""+ChatColor.BOLD+"Select your kit.")) {
+            event.setCancelled(true);
+            player.sendMessage(ChatColor.RED+"This feature does not exist yet!");
+        }
+    }
+
     public void openJoinGui(Player player) {
         Inventory inventory = Bukkit.createInventory(null, 18, ChatColor.RED+""+ChatColor.BOLD+"Select your kit.");
 
@@ -94,5 +105,7 @@ public final class PaintShot extends JavaPlugin implements Listener {
 
         player.openInventory(inventory);
     }
+
+
 
 }
