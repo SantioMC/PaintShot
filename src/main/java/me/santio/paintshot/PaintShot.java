@@ -107,6 +107,7 @@ public final class PaintShot extends JavaPlugin implements Listener {
             ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.LIGHT_PURPLE+"- "+ChatColor.GRAY+gotKit.getDescription());
             logoMeta.setLore(lore);
+            inventory.addItem(logo);
         }
 
         player.openInventory(inventory);
