@@ -12,12 +12,15 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +38,7 @@ public final class PaintShot extends JavaPlugin implements Listener {
         saveDefaultConfig();
         getConfig().options().copyDefaults(true);
         Bukkit.getServer().getPluginManager().registerEvents(this, this);
+
 
         // Register Commands
         this.getCommand("join").setExecutor(new JoinCommandExecutor());
@@ -137,6 +141,28 @@ public final class PaintShot extends JavaPlugin implements Listener {
         }
 
         player.openInventory(inventory);
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent e) {
+        new BukkitRunnable() {
+            int timer = 130;
+            @Override
+            public void run() {
+
+                ScoreboardManager manager = Bukkit.getScoreboardManager();
+                Scoreboard sidebar = manager.getNewScoreboard();
+                Objective obj = sidebar.registerNewObjective("Scoreboard", "dummy");
+
+                obj.setDisplayName("  §b§lPaintShot §8[§e" + Bukkit.getOnlinePlayers().size() + "§8/§e" + Bukkit.getServer().getMaxPlayers() + "§8]");
+                obj.setDisplaySlot(DisplaySlot.SIDEBAR);
+
+                this.timer--;
+
+                obj.getScore("§aTime Left:").setScore(timer);
+                e.getPlayer().setScoreboard(sidebar);
+            }
+        }.runTaskTimer(this, 0, 75);
     }
 
 
