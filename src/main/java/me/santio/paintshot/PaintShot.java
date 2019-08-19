@@ -4,6 +4,7 @@ import me.santio.paintshot.Kits.ExtraWoolKit;
 import me.santio.paintshot.Kits.KitManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -103,7 +104,7 @@ public final class PaintShot extends JavaPlugin implements Listener {
     public void onDamage(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player) {
             Player attacker = (Player) event.getDamager();
-            if (!(attacker.getItemInHand().getItemMeta().getDisplayName().contains("Sword"))) {
+            if (!(attacker.getItemInHand().getType() == Material.WOODEN_SWORD)) {
                 event.setCancelled(true);
             }
         } else {
