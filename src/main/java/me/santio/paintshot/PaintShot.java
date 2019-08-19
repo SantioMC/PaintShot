@@ -24,7 +24,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class PaintShot extends JavaPlugin implements Listener {
-
+    
+    int timer = 180;
     public static PaintShot instance;
 
     public HashMap<String, KitManager> kits = new HashMap<>();
@@ -138,7 +139,29 @@ public final class PaintShot extends JavaPlugin implements Listener {
 
         player.openInventory(inventory);
     }
+    
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent e) {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
 
+                ScoreboardManager manager = Bukkit.getScoreboardManager();
+                Scoreboard sidebar = manager.getNewScoreboard();
+                Objective obj = sidebar.registerNewObjective("Scoreboard", "dummy");
 
+                obj.setDisplayName("  §b§lPaintShot §8[§e" + Bukkit.getOnlinePlayers().size() + "§8/§e" + Bukkit.getServer().getMaxPlayers() + "§8]");
+                obj.setDisplaySlot(DisplaySlot.SIDEBAR);
+
+                timer--;
+
+                obj.getScore("§aTime Left:").setScore(timer);
+                obj.getScore(" ").setScore(-1);
+                obj.getScore("§9/join").setScore(-2);
+                obj.getScore("§bServer IP in here idek.").setScore(-3);
+                e.getPlayer().setScoreboard(sidebar);
+            }
+        }.runTaskTimer(this, 1, 20); //20 incase is the amount of ticks. 20 = 1 second
+    }
 
 }
