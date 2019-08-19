@@ -28,6 +28,7 @@ import java.util.Map;
 
 public final class PaintShot extends JavaPlugin implements Listener {
 
+    int timer = 180;
     public static PaintShot instance;
 
     public HashMap<String, KitManager> kits = new HashMap<>();
@@ -146,7 +147,6 @@ public final class PaintShot extends JavaPlugin implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         new BukkitRunnable() {
-            int timer = 130;
             @Override
             public void run() {
 
@@ -157,12 +157,12 @@ public final class PaintShot extends JavaPlugin implements Listener {
                 obj.setDisplayName("  §b§lPaintShot §8[§e" + Bukkit.getOnlinePlayers().size() + "§8/§e" + Bukkit.getServer().getMaxPlayers() + "§8]");
                 obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 
-                this.timer--;
+                timer--;
 
                 obj.getScore("§aTime Left:").setScore(timer);
                 e.getPlayer().setScoreboard(sidebar);
             }
-        }.runTaskTimer(this, 0, 75);
+        }.runTaskTimer(this, 1, 20);
     }
 
 
