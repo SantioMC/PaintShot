@@ -4,3 +4,8 @@ main: me.santio.paintshot.PaintShot
 api-version: 1.13
 authors: [3Q6, Santio71]
 description: The main plugin for PaintShot, Converted from skript to java
+
+commands:
+  join:
+    aliases: ["play","kit","kits","enter"]
+    description: Main command for PaintShot

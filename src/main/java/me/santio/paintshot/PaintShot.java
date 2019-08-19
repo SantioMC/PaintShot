@@ -1,5 +1,6 @@
 package me.santio.paintshot;
 
+import me.santio.paintshot.Kits.ExtraWoolKit;
 import me.santio.paintshot.Kits.KitManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -7,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
@@ -31,11 +31,17 @@ public final class PaintShot extends JavaPlugin implements Listener {
         saveDefaultConfig();
         getConfig().options().copyDefaults(true);
         Bukkit.getServer().getPluginManager().registerEvents(this, this);
+
+        // Register Commands
         this.getCommand("join").setExecutor(new JoinCommandExecutor());
         this.getCommand("kit").setExecutor(new JoinCommandExecutor());
         this.getCommand("kits").setExecutor(new JoinCommandExecutor());
         this.getCommand("play").setExecutor(new JoinCommandExecutor());
         this.getCommand("enter").setExecutor(new JoinCommandExecutor());
+
+        // Register Kits
+        ExtraWoolKit ExtraWool = new ExtraWoolKit();
+        ExtraWool.createKit();
 
     }
 
