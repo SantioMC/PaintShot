@@ -8,3 +8,5 @@ This plugin was designed from the minehut server PaintShot <i>( PaintShot.minehu
 Full credits goes to the owner of PaintShot ( 3Q6 )
 Check them out @ <b>PaintShot.minehut.gg</b><br>
 Or connect using <b>minehut.com</b> than running <b><code>/join PaintShot</code></b>
+
+You can also check out their discord! https://discord.gg/SyB3D9S
