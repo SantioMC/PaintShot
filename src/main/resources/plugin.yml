@@ -9,3 +9,6 @@ commands:
   join:
     aliases: ["play","kit","kits","enter"]
     description: Main command for PaintShot
+  setlobby:
+    aliases: ["setspawn"]
+    description: Sets where players get teleported when game ends

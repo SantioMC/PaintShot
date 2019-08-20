@@ -5,27 +5,27 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
 
-public class JoinCommandExecutor implements CommandExecutor {
+public class SetLobbyCommandExecutor implements CommandExecutor {
 
     PaintShot plugin = PaintShot.instance;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED+"This command can only be executed from in game!");
+            sender.sendMessage(ChatColor.RED+"This command can only be executed in-game!");
             return true;
         }
 
         Player player = (Player) sender;
 
-        if (args.length >= 1) {
-            player.sendMessage(ChatColor.RED+"/"+command);
+        if (!(player.hasPermission("paintshot.setlobby"))) {
+            player.sendMessage(ChatColor.RED+"You are not permitted to execute this command!");
             return true;
         }
 
-        plugin.openJoinGui(player);
+        plugin.save("lobbySpawn",player.getLocation());
+        player.sendMessage(ChatColor.GREEN+"The lobby was set to your location!");
 
         return true;
     }
