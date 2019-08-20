@@ -2,11 +2,14 @@ package me.santio.paintshot;
 
 import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -42,6 +45,18 @@ public class EventClass implements Listener {
             Player player = (Player) event.getEntity();
             player.setFoodLevel(20);
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        if (event.getAction().equals(Action.RIGHT_CLICK_AIR)) {
+            Player player = event.getPlayer();
+            if (player.getItemInHand().getType() == Material.WOODEN_HOE) {
+                Snowball snowball = player.getWorld().spawn(player.getEyeLocation(), Snowball.class);
+                snowball.setVelocity(player.getLocation().getDirection().multiply(1.5));
+                snowball.setShooter(player);
+            }
         }
     }
 
