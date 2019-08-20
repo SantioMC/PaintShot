@@ -3,6 +3,7 @@ package me.santio.paintshot;
 import me.santio.paintshot.Kits.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -53,6 +54,9 @@ public final class PaintShot extends JavaPlugin implements Listener {
         this.getCommand("play").setExecutor(new JoinCommandExecutor());
         this.getCommand("enter").setExecutor(new JoinCommandExecutor());
 
+        this.getCommand("setspawn").setExecutor(new SetLobbyCommandExecutor());
+        this.getCommand("setlobby").setExecutor(new SetLobbyCommandExecutor());
+
         // Register Kits
         ExtraWoolKit ExtraWool = new ExtraWoolKit();
         ExtraWool.createKit();
@@ -62,6 +66,19 @@ public final class PaintShot extends JavaPlugin implements Listener {
         Glass.createKit();
         KnifeKit Knife = new KnifeKit();
         Knife.createKit();
+
+        // Timer Countdown
+
+        new BukkitRunnable() {
+
+            @Override
+            public void run() {
+                if (timer <= 0) {
+                    timer = 180; // Holder
+                }
+                timer--;
+            }
+        }.runTaskTimerAsynchronously(this,0,20); // Run each 20 seconds
 
     }
 
@@ -99,6 +116,9 @@ public final class PaintShot extends JavaPlugin implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (!isSet(player.getUniqueId()+".wins")) saveDefaultValues(player);
+        if (isSet("lobbySpawn")) {
+            player.teleport((Location) get("lobbySpawn"));
+        }
         event.setJoinMessage(ChatColor.DARK_GRAY+"["+ChatColor.GREEN+"+"+ChatColor.DARK_GRAY+"]"+ChatColor.AQUA+" "+player.getDisplayName());
     }
     @EventHandler
@@ -169,9 +189,6 @@ public final class PaintShot extends JavaPlugin implements Listener {
 
                 obj.setDisplayName("  §b§lPaintShot §8[§6" + Bukkit.getOnlinePlayers().size() + "§8/§6" + Bukkit.getServer().getMaxPlayers() + "§8]");
                 obj.setDisplaySlot(DisplaySlot.SIDEBAR);
-
-
-                timer--;
 
                 obj.getScore("§aTime Left:").setScore(timer);
                 obj.getScore(" ").setScore(-1);
