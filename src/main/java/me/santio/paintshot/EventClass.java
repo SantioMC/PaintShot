@@ -1,16 +1,19 @@
 package me.santio.paintshot;
 
+import me.santio.paintshot.Kits.KitManager;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -21,6 +24,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class EventClass implements Listener {
 
@@ -62,6 +66,7 @@ public class EventClass implements Listener {
             Player player = event.getPlayer();
             if (player.getItemInHand().getType() == Material.WOODEN_HOE) {
                 if (!(reload.contains(player.getName()))) {
+                    player.playSound(player.getLocation(),Sound.ENTITY_SNOWBALL_THROW,1,1);
                     Snowball snowball = player.getWorld().spawn(player.getEyeLocation(), Snowball.class);
                     snowball.setVelocity(player.getLocation().getDirection().multiply(1.5));
                     snowball.setShooter(player);
@@ -90,18 +95,31 @@ public class EventClass implements Listener {
             ArrayList<Block> blocks = plugin.getBlocks(event.getHitBlock().getLocation(),1);
             for (Block block : blocks) {
                 if (block.getType() == Material.WHITE_TERRACOTTA) {
-                    if (plugin.getChance(75)) block.setType(Material.BLUE_TERRACOTTA);
+                    if (plugin.getChance(75)) block.setType(Material.LIGHT_BLUE_TERRACOTTA);
                 } else if (block.getType() == Material.WHITE_STAINED_GLASS_PANE) {
-                    if (plugin.getChance(75)) block.setType(Material.BLUE_STAINED_GLASS_PANE);
+                    if (plugin.getChance(75)) block.setType(Material.LIGHT_BLUE_STAINED_GLASS_PANE);
                 } else if (block.getType() == Material.WHITE_STAINED_GLASS) {
-                    if (plugin.getChance(75)) block.setType(Material.BLUE_STAINED_GLASS);
+                    if (plugin.getChance(75)) block.setType(Material.LIGHT_BLUE_STAINED_GLASS);
                 } else if (block.getType() == Material.WHITE_WOOL) {
-                    if (plugin.getChance(75)) block.setType(Material.BLUE_WOOL);
+                    if (plugin.getChance(75)) block.setType(Material.LIGHT_BLUE_WOOL);
                 }
             }
         }
     }
 
+
+    @EventHandler void onAllDamage(EntityDamageEvent event) {
+        LivingEntity victim = (LivingEntity) event.getEntity();
+        if (victim.getKiller() != null) {
+            LivingEntity attacker = victim.getKiller();
+            AttributeInstance attribute = attacker.getAttribute(Attribute.GENERIC_ATTACK_SPEED);
+            attribute.setBaseValue(21);
+        }
+
+        if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
+            event.setCancelled(true);
+        }
+    }
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player) {
@@ -118,9 +136,18 @@ public class EventClass implements Listener {
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         if (event.getView().getTitle().equalsIgnoreCase(ChatColor.RED+""+ChatColor.BOLD+"Select your kit.")) {
-            event.setCancelled(true);
-            player.sendMessage(ChatColor.RED+"This feature does not exist yet!");
-            player.closeInventory();
+            for (Map.Entry entry : plugin.kits.entrySet()) {
+                KitManager gotKit = (KitManager) entry.getValue();
+                player.sendMessage(ChatColor.RED+"This feature is not complete!");
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void manipulate(PlayerArmorStandManipulateEvent e) {
+        if(!e.getRightClicked().isVisible()) {
+            e.setCancelled(true);
         }
     }
 
