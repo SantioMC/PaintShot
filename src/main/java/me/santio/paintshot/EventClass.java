@@ -26,6 +26,8 @@ public class EventClass implements Listener {
 
     PaintShot plugin = PaintShot.instance;
 
+    Teams team = new Teams();
+
     ArrayList<String> reload = new ArrayList<>();
 
     @EventHandler
@@ -143,5 +145,15 @@ public class EventClass implements Listener {
                 e.getPlayer().setScoreboard(sidebar);
             }
         }.runTaskTimer(plugin, 1, 20); //20 incase is the amount of ticks. 20 = 1 second
+    }
+
+    @EventHandler
+    public void TeamJ(PlayerJoinEvent e) {
+        Player player = e.getPlayer();
+        if (team.hasPlayer(player)) {
+            Bukkit.broadcastMessage("nerd");
+        } else {
+            Bukkit.getServer().broadcastMessage("this kid doesn't have a team. what a nerd.");
+        }
     }
 }
