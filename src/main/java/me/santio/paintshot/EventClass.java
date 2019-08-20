@@ -28,7 +28,6 @@ public class EventClass implements Listener {
 
     Teams team = new Teams();
 
-
     ArrayList<String> reload = new ArrayList<>();
 
     @EventHandler
@@ -151,8 +150,10 @@ public class EventClass implements Listener {
     @EventHandler
     public void TeamJ(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-        if (!team.hasPlayer(player)) {
+        if (team.hasPlayer(player)) {
             Bukkit.broadcastMessage("nerd");
+        } else {
+            Bukkit.getServer().broadcastMessage("this kid doesn't have a team. what a nerd.");
         }
     }
 }
