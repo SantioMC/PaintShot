@@ -2,6 +2,7 @@ package me.santio.paintshot;
 
 import me.santio.paintshot.Kits.*;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
@@ -13,6 +14,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public final class PaintShot extends JavaPlugin implements Listener {
 
@@ -117,6 +119,25 @@ public final class PaintShot extends JavaPlugin implements Listener {
 
         player.openInventory(inventory);
     }
+
+    public ArrayList<Block> getBlocks(Block start, int radius){
+        ArrayList<Block> blocks = new ArrayList<Block>();
+        for(double x = start.getLocation().getX() - radius; x <= start.getLocation().getX() + radius; x++){
+            for(double y = start.getLocation().getY() - radius; y <= start.getLocation().getY() + radius; y++){
+                for(double z = start.getLocation().getZ() - radius; z <= start.getLocation().getZ() + radius; z++){
+                    Location loc = new Location(start.getWorld(), x, y, z);
+                    blocks.add(loc.getBlock());
+                }
+            }
+        }
+        return blocks;
+    }
+
+    public boolean getChance(int chance) {
+        Random random = new Random();
+        return random.nextInt(99) + 1 < chance;
+    }
+
 
 
 }

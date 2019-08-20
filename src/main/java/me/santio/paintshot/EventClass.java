@@ -1,6 +1,7 @@
 package me.santio.paintshot;
 
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
@@ -8,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -63,12 +65,35 @@ public class EventClass implements Listener {
                     snowball.setShooter(player);
                     reload.add(player.getName());
                     new BukkitRunnable() {
-
                         @Override
                         public void run() {
                             reload.remove(player.getName());
                         }
                     }.runTaskLater(plugin, 20); // 1 second reload
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onLand(ProjectileHitEvent event) {
+        if (event.getHitEntity() != null) {
+            if (event.getHitEntity() instanceof Player) {
+                ((Player) event.getHitEntity()).damage(4);
+                event.getEntity().remove();
+            }
+        }
+        if (event.getHitBlock() != null) {
+            ArrayList<Block> blocks = plugin.getBlocks(event.getHitBlock(),1);
+            for (Block block : blocks) {
+                if (block.getType() == Material.WHITE_TERRACOTTA) {
+                    if (plugin.getChance(75)) block.setType(Material.BLUE_TERRACOTTA);
+                } else if (block.getType() == Material.WHITE_STAINED_GLASS_PANE) {
+                    if (plugin.getChance(75)) block.setType(Material.BLUE_STAINED_GLASS_PANE);
+                } else if (block.getType() == Material.WHITE_STAINED_GLASS) {
+                    if (plugin.getChance(75)) block.setType(Material.BLUE_STAINED_GLASS);
+                } else if (block.getType() == Material.WHITE_WOOL) {
+                    if (plugin.getChance(75)) block.setType(Material.BLUE_WOOL);
                 }
             }
         }
