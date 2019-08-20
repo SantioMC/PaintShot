@@ -28,6 +28,7 @@ import java.util.Map;
 
 public final class PaintShot extends JavaPlugin implements Listener {
 
+
     int timer;
     public static PaintShot instance;
 
