@@ -18,9 +18,13 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
+import java.util.ArrayList;
+
 public class EventClass implements Listener {
 
     PaintShot plugin = PaintShot.instance;
+
+    ArrayList<String> reload = new ArrayList<>();
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
@@ -50,12 +54,22 @@ public class EventClass implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.getAction().equals(Action.RIGHT_CLICK_AIR)) {
+        if (event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
             Player player = event.getPlayer();
             if (player.getItemInHand().getType() == Material.WOODEN_HOE) {
-                Snowball snowball = player.getWorld().spawn(player.getEyeLocation(), Snowball.class);
-                snowball.setVelocity(player.getLocation().getDirection().multiply(1.5));
-                snowball.setShooter(player);
+                if (!(reload.contains(player.getName()))) {
+                    Snowball snowball = player.getWorld().spawn(player.getEyeLocation(), Snowball.class);
+                    snowball.setVelocity(player.getLocation().getDirection().multiply(1.5));
+                    snowball.setShooter(player);
+                    reload.add(player.getName());
+                    new BukkitRunnable() {
+
+                        @Override
+                        public void run() {
+                            reload.remove(player.getName());
+                        }
+                    }.runTaskLater(plugin, 20); // 1 second reload
+                }
             }
         }
     }
