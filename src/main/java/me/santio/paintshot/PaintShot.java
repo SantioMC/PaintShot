@@ -42,7 +42,7 @@ public final class PaintShot extends JavaPlugin implements Listener {
         getConfig().options().copyDefaults(true);
 
         // Register Events
-        Bukkit.getServer().getPluginManager().registerEvents(this, this);
+        Bukkit.getServer().getPluginManager().registerEvents(new EventClass(), this);
 
         // Register Commands
         this.getCommand("join").setExecutor(new JoinCommandExecutor());
@@ -109,54 +109,6 @@ public final class PaintShot extends JavaPlugin implements Listener {
         save(key+"deaths",0);
     }
 
-    @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        if (!isSet(player.getUniqueId()+".wins")) saveDefaultValues(player);
-        if (isSet("lobbySpawn")) {
-            player.teleport((Location) get("lobbySpawn"));
-        }
-        player.setGameMode(GameMode.ADVENTURE);
-        player.setFlying(false);
-        event.setJoinMessage(ChatColor.DARK_GRAY+"["+ChatColor.GREEN+"+"+ChatColor.DARK_GRAY+"]"+ChatColor.AQUA+" "+player.getDisplayName());
-    }
-    @EventHandler
-    public void onLeave(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
-        event.setQuitMessage(ChatColor.DARK_GRAY+"["+ChatColor.RED+"-"+ChatColor.DARK_GRAY+"]"+ChatColor.AQUA+" "+player.getDisplayName());
-    }
-
-    @EventHandler
-    public void onHungerChange(FoodLevelChangeEvent event) {
-        if (event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
-            player.setFoodLevel(20);
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onDamage(EntityDamageByEntityEvent event) {
-        if (event.getDamager() instanceof Player) {
-            Player attacker = (Player) event.getDamager();
-            if (!(attacker.getItemInHand().getType() == Material.WOODEN_SWORD)) {
-                event.setCancelled(true);
-            }
-        } else {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
-        Player player = (Player) event.getWhoClicked();
-        if (event.getView().getTitle().equalsIgnoreCase(ChatColor.RED+""+ChatColor.BOLD+"Select your kit.")) {
-            event.setCancelled(true);
-            player.sendMessage(ChatColor.RED+"This feature does not exist yet!");
-            player.closeInventory();
-        }
-    }
-
     public void openJoinGui(Player player) {
         Inventory inventory = Bukkit.createInventory(null, 18, ChatColor.RED+""+ChatColor.BOLD+"Select your kit.");
 
@@ -174,29 +126,6 @@ public final class PaintShot extends JavaPlugin implements Listener {
         }
 
         player.openInventory(inventory);
-    }
-
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent e) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-
-                ScoreboardManager manager = Bukkit.getScoreboardManager();
-                Scoreboard sidebar = manager.getNewScoreboard();
-                Objective obj = sidebar.registerNewObjective("Scoreboard", "dummy");
-
-
-                obj.setDisplayName("  §b§lPaintShot §8[§6" + Bukkit.getOnlinePlayers().size() + "§8/§6" + Bukkit.getServer().getMaxPlayers() + "§8]");
-                obj.setDisplaySlot(DisplaySlot.SIDEBAR);
-
-                obj.getScore("§aTime Left:").setScore(timer);
-                obj.getScore(" ").setScore(-1);
-                obj.getScore("§9/join").setScore(-2);
-                obj.getScore("§bServer IP in here idek.").setScore(-3);
-                e.getPlayer().setScoreboard(sidebar);
-            }
-        }.runTaskTimer(this, 1, 20); //20 incase is the amount of ticks. 20 = 1 second
     }
 
 
