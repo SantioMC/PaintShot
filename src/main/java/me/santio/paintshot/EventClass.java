@@ -83,6 +83,7 @@ public class EventClass implements Listener {
                 event.getEntity().remove();
             }
         }
+
         if (event.getHitBlock() != null) {
             ArrayList<Block> blocks = plugin.getBlocks(event.getHitBlock(),1);
             for (Block block : blocks) {
