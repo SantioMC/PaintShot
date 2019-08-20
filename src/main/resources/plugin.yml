@@ -2,7 +2,7 @@ name: PaintShot
 version: ${project.version}
 main: me.santio.paintshot.PaintShot
 api-version: 1.13
-authors: [3Q6, Santio71]
+authors: [3Q6, Rerts, Santio71]
 description: The main plugin for PaintShot, Converted from skript to java
 
 commands:
@@ -15,3 +15,5 @@ commands:
   resetmap:
     aliases: ["reset"]
     description: Resets all maps around you!
+  arena:
+    description: Main command to manage arenas

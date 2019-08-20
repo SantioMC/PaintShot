@@ -23,7 +23,8 @@ public class ResetMapCommandExecutor implements CommandExecutor {
             player.sendMessage(ChatColor.RED+"You are not permitted to execute this command!");
             return true;
         }
-        plugin.resetMap(player);
+        player.sendMessage(ChatColor.GRAY+"Resetting map...");
+        plugin.resetMap(player.getLocation());
         player.sendMessage(ChatColor.GREEN+"Map reset!");
         return true;
     }

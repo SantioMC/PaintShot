@@ -17,6 +17,7 @@ import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -78,6 +79,12 @@ public class EventClass implements Listener {
                         }
                     }.runTaskLater(plugin, 20); // 1 second reload
                 }
+            }
+        } else if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
+            Block block = event.getClickedBlock();
+            if (block.getType().equals(Material.WHITE_STAINED_GLASS) || block.getType().equals(Material.LIGHT_BLUE_STAINED_GLASS) || block.getType().equals(Material.PINK_STAINED_GLASS)) {
+                block.setType(Material.AIR);
+                event.getPlayer().getInventory().addItem(new ItemStack(Material.WHITE_STAINED_GLASS,1));
             }
         }
     }

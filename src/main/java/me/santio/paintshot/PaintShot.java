@@ -1,8 +1,11 @@
 package me.santio.paintshot;
 
+import me.santio.paintshot.Arenas.ArenaCommand;
 import me.santio.paintshot.Kits.*;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
@@ -47,6 +50,11 @@ public final class PaintShot extends JavaPlugin implements Listener {
         this.getCommand("setspawn").setExecutor(new SetLobbyCommandExecutor());
         this.getCommand("setlobby").setExecutor(new SetLobbyCommandExecutor());
 
+        this.getCommand("resetmap").setExecutor(new ResetMapCommandExecutor());
+        this.getCommand("reset").setExecutor(new ResetMapCommandExecutor());
+
+        this.getCommand("arena").setExecutor(new ArenaCommand());
+
         // Register Kits
         ExtraWoolKit ExtraWool = new ExtraWoolKit();
         ExtraWool.createKit();
@@ -70,11 +78,26 @@ public final class PaintShot extends JavaPlugin implements Listener {
             }
         }.runTaskTimerAsynchronously(this,0,20); // Run each 20 seconds
 
+        // Create Hologram
+
+        Location location = new Location(Bukkit.getWorld("default"), 0, 81, 0);
+        createHologram(location, ChatColor.BLUE+"/join");
+
     }
 
     @Override
     public void onDisable() {
         saveConfig();
+    }
+
+    public void createHologram(Location location, String message) {
+        ArmorStand as = (ArmorStand) location.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
+
+        as.setGravity(false);
+        as.setCanPickupItems(false);
+        as.setCustomName(message);
+        as.setCustomNameVisible(true);
+        as.setVisible(false);
     }
 
     public void save(String key, Object value) {
@@ -139,16 +162,16 @@ public final class PaintShot extends JavaPlugin implements Listener {
         return random.nextInt(99) + 1 < chance;
     }
 
-    public void resetMap(Player player) {
-        ArrayList<Block> blocks = getBlocks(player.getLocation(),50);
+    public void resetMap(Location location) {
+        ArrayList<Block> blocks = getBlocks(location,50);
         for (Block block : blocks) {
-            if (block.getType() == Material.BLUE_TERRACOTTA) {
+            if (block.getType() == Material.LIGHT_BLUE_TERRACOTTA) {
                 block.setType(Material.WHITE_TERRACOTTA);
-            } else if (block.getType() == Material.BLUE_STAINED_GLASS_PANE) {
+            } else if (block.getType() == Material.LIGHT_BLUE_STAINED_GLASS_PANE) {
                 block.setType(Material.WHITE_STAINED_GLASS_PANE);
-            } else if (block.getType() == Material.BLUE_STAINED_GLASS) {
+            } else if (block.getType() == Material.LIGHT_BLUE_STAINED_GLASS) {
                 block.setType(Material.WHITE_STAINED_GLASS);
-            } else if (block.getType() == Material.BLUE_WOOL) {
+            } else if (block.getType() == Material.LIGHT_BLUE_WOOL) {
                 block.setType(Material.WHITE_WOOL);
             }
         }
