@@ -1,10 +1,7 @@
 package me.santio.paintshot;
 
 import me.santio.paintshot.Kits.*;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -119,6 +116,8 @@ public final class PaintShot extends JavaPlugin implements Listener {
         if (isSet("lobbySpawn")) {
             player.teleport((Location) get("lobbySpawn"));
         }
+        player.setGameMode(GameMode.ADVENTURE);
+        player.setFlying(false);
         event.setJoinMessage(ChatColor.DARK_GRAY+"["+ChatColor.GREEN+"+"+ChatColor.DARK_GRAY+"]"+ChatColor.AQUA+" "+player.getDisplayName());
     }
     @EventHandler
