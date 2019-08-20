@@ -1,6 +1,7 @@
 package me.santio.paintshot.Kits;
 
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 
@@ -11,14 +12,16 @@ public class KitManager {
     private Integer WoolCount;
     private ArrayList<ItemStack> items;
     private ItemStack logo;
+    private PotionEffectType potion;
 
-    public KitManager(Integer requiredWins, String name, String description, ArrayList<ItemStack> items, Integer WoolCount, ItemStack logo) {
+    public KitManager(Integer requiredWins, String name, String description, ArrayList<ItemStack> items, Integer WoolCount, ItemStack logo, PotionEffectType potion) {
         this.requiredWins = requiredWins;
         this.name = name;
         this.description = description;
         this.items = items;
         this.WoolCount = WoolCount;
         this.logo = logo;
+        this.potion = potion;
     }
 
     public void setDescription(String description) {
@@ -67,5 +70,13 @@ public class KitManager {
 
     public void setLogo(ItemStack logo) {
         this.logo = logo;
+    }
+
+    public PotionEffectType getPotion() {
+        return potion;
+    }
+
+    public void setPotion(PotionEffectType potion) {
+        this.potion = potion;
     }
 }
