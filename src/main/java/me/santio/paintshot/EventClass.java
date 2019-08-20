@@ -85,7 +85,7 @@ public class EventClass implements Listener {
         }
 
         if (event.getHitBlock() != null) {
-            ArrayList<Block> blocks = plugin.getBlocks(event.getHitBlock(),1);
+            ArrayList<Block> blocks = plugin.getBlocks(event.getHitBlock().getLocation(),1);
             for (Block block : blocks) {
                 if (block.getType() == Material.WHITE_TERRACOTTA) {
                     if (plugin.getChance(75)) block.setType(Material.BLUE_TERRACOTTA);

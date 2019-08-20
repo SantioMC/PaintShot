@@ -120,11 +120,11 @@ public final class PaintShot extends JavaPlugin implements Listener {
         player.openInventory(inventory);
     }
 
-    public ArrayList<Block> getBlocks(Block start, int radius){
+    public ArrayList<Block> getBlocks(Location start, int radius){
         ArrayList<Block> blocks = new ArrayList<Block>();
-        for(double x = start.getLocation().getX() - radius; x <= start.getLocation().getX() + radius; x++){
-            for(double y = start.getLocation().getY() - radius; y <= start.getLocation().getY() + radius; y++){
-                for(double z = start.getLocation().getZ() - radius; z <= start.getLocation().getZ() + radius; z++){
+        for(double x = start.getX() - radius; x <= start.getX() + radius; x++){
+            for(double y = start.getY() - radius; y <= start.getY() + radius; y++){
+                for(double z = start.getZ() - radius; z <= start.getZ() + radius; z++){
                     Location loc = new Location(start.getWorld(), x, y, z);
                     blocks.add(loc.getBlock());
                 }
@@ -136,6 +136,21 @@ public final class PaintShot extends JavaPlugin implements Listener {
     public boolean getChance(int chance) {
         Random random = new Random();
         return random.nextInt(99) + 1 < chance;
+    }
+
+    public void resetMap(Player player) {
+        ArrayList<Block> blocks = getBlocks(player.getLocation(),50);
+        for (Block block : blocks) {
+            if (block.getType() == Material.BLUE_TERRACOTTA) {
+                block.setType(Material.WHITE_TERRACOTTA);
+            } else if (block.getType() == Material.BLUE_STAINED_GLASS_PANE) {
+                block.setType(Material.WHITE_STAINED_GLASS_PANE);
+            } else if (block.getType() == Material.BLUE_STAINED_GLASS) {
+                block.setType(Material.WHITE_STAINED_GLASS);
+            } else if (block.getType() == Material.BLUE_WOOL) {
+                block.setType(Material.WHITE_WOOL);
+            }
+        }
     }
 
 

@@ -8,7 +8,10 @@ description: The main plugin for PaintShot, Converted from skript to java
 commands:
   join:
     aliases: ["play","kit","kits","enter"]
-    description: Main command for PaintShot
+    description: Main command for PaintShot!
   setlobby:
     aliases: ["setspawn"]
-    description: Sets where players get teleported when game ends
+    description: Sets where players get teleported when game ends!
+  resetmap:
+    aliases: ["reset"]
+    description: Resets all maps around you!
