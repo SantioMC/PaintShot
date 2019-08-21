@@ -203,14 +203,4 @@ public class EventClass implements Listener {
             }
         }.runTaskTimer(plugin, 1, 20); //20 incase is the amount of ticks. 20 = 1 second
     }
-
-    @EventHandler
-    public void TeamJ(PlayerJoinEvent e) {
-        Player player = e.getPlayer();
-        if (team.hasPlayer(player)) {
-            Bukkit.broadcastMessage("nerd");
-        } else {
-            Bukkit.getServer().broadcastMessage("this kid doesn't have a team. what a nerd.");
-        }
-    }
 }
