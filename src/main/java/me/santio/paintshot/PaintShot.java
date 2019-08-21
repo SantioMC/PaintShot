@@ -1,9 +1,11 @@
 package me.santio.paintshot;
 
 import me.santio.paintshot.Arenas.ArenaCommand;
+import me.santio.paintshot.Arenas.ArenaManager;
 import me.santio.paintshot.Kits.*;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -12,8 +14,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.Team;
+import org.bukkit.scoreboard.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,15 +30,26 @@ public final class PaintShot extends JavaPlugin implements Listener {
     public static PaintShot instance;
 
     public HashMap<String, KitManager> kits = new HashMap<>();
+    public HashMap<String, ArenaManager> arenas = new HashMap<>();
+    public String currentArena;
 
     @Override
     public void onEnable() {
+
+        // Global variables
         instance = this;
         timer = 180; // Allows the plugin to be reloaded
 
         // Setup Configuration
         saveDefaultConfig();
         getConfig().options().copyDefaults(true);
+
+        updateArenas();
+
+        // Set Arena and Reset
+
+        currentArena = getRandomArena();
+        arenas.get(currentArena).resetMap();
 
         // Register Events
         Bukkit.getServer().getPluginManager().registerEvents(new EventClass(), this);
@@ -88,6 +102,54 @@ public final class PaintShot extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         saveConfig();
+    }
+
+    public void updateArenas() {
+        arenas.clear();
+        ConfigurationSection sec = getConfig().getConfigurationSection("arena");
+
+        for(String key : sec.getKeys(false)){
+            Location blueSpawn = new Location(Bukkit.getWorld("default"), getConfig().getInt("arena."+key+".blueSpawn.x"), getConfig().getInt("arena."+key+".blueSpawn.y"), getConfig().getInt("arena."+key+".blueSpawn.z"));
+            Location redSpawn = new Location(Bukkit.getWorld("default"), getConfig().getInt("arena."+key+".redSpawn.x"), getConfig().getInt("arena."+key+".redSpawn.y"), getConfig().getInt("arena."+key+".redSpawn.z"));
+            Location center = new Location(Bukkit.getWorld("default"), getConfig().getInt("arena."+key+".center.x"), getConfig().getInt("arena."+key+".center.y"), getConfig().getInt("arena."+key+".center.z"));
+            ArenaManager arena = new ArenaManager(key, getConfig().getBoolean("arena."+key+".restricted"), blueSpawn, redSpawn, center);
+            arenas.put(key, arena);
+        }
+    }
+
+    public void updateScoreboard(Player player) {
+        ScoreboardManager manager = Bukkit.getScoreboardManager();
+        Scoreboard sidebar = manager.getNewScoreboard();
+        Objective obj = sidebar.registerNewObjective("Scoreboard", "dummy");
+
+
+        obj.setDisplayName("  §b§lPaintShot §8[§6" + Bukkit.getOnlinePlayers().size() + "§8/§6" + Bukkit.getServer().getMaxPlayers() + "§8]");
+        obj.setDisplaySlot(DisplaySlot.SIDEBAR);
+
+        obj.getScore("§aTime Left:").setScore(timer);
+        obj.getScore(" ").setScore(-1);
+        obj.getScore("§9/join").setScore(-2);
+        obj.getScore("§bServer IP in here idek.").setScore(-3);
+        player.setScoreboard(sidebar);
+    }
+
+    public String getRandomArena() {
+        Object[] gotArenas = arenas.keySet().toArray();
+        String key = (String) gotArenas[new Random().nextInt(gotArenas.length)];
+        if (arenas.get(key).isRestricted()) getRandomArena();
+        return key;
+    }
+
+    public void giveKit(Player player, KitManager kit) {
+        player.getInventory().clear();
+        player.getActivePotionEffects().clear();
+        for (ItemStack item : kit.getItems()) {
+            player.getInventory().addItem(item);
+        }
+        if (kit.getPotion() != null) {
+            player.addPotionEffect(new PotionEffect(kit.getPotion(), 1000000,1));
+        }
+        player.getInventory().addItem(new ItemStack(Material.WHITE_WOOL, kit.getWoolCount()));
     }
 
     public void createHologram(Location location, String message) {

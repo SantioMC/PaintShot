@@ -1,16 +1,13 @@
 package me.santio.paintshot;
 
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Team;
 
 import java.util.HashMap;
 
 public class Teams {
     public static Teams instance;
 
-    public enum Team { RED, BLUE;}
-    private Location redspawn, bluespawn;
+    public enum Team { RED, BLUE }
     private HashMap<String, Team> players = new HashMap<String, Team>();
 
 
