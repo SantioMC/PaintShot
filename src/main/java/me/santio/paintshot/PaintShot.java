@@ -149,7 +149,7 @@ public final class PaintShot extends JavaPlugin implements Listener {
             player.getInventory().addItem(item);
         }
         if (kit.getPotion() != null) {
-            player.addPotionEffect(new PotionEffect(kit.getPotion(), 1000000,1));
+            player.addPotionEffect(new PotionEffect(kit.getPotion(), 1000000,0));
         }
         player.getInventory().addItem(new ItemStack(Material.WHITE_WOOL, kit.getWoolCount()));
     }

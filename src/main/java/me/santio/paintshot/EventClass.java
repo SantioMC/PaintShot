@@ -1,5 +1,6 @@
 package me.santio.paintshot;
 
+import me.santio.paintshot.Arenas.ArenaManager;
 import me.santio.paintshot.Kits.KitManager;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
@@ -18,14 +19,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class EventClass implements Listener {
 
@@ -46,6 +43,7 @@ public class EventClass implements Listener {
         player.setFlying(false);
         event.setJoinMessage(ChatColor.DARK_GRAY+"["+ChatColor.GREEN+"+"+ChatColor.DARK_GRAY+"]"+ChatColor.AQUA+" "+player.getDisplayName());
     }
+
     @EventHandler
     public void onLeave(PlayerQuitEvent event) {
         Player player = event.getPlayer();
@@ -140,14 +138,50 @@ public class EventClass implements Listener {
     }
 
     @EventHandler
+    public void onDeath(PlayerDeathEvent event) {
+        new BukkitRunnable() {
+
+            @Override
+            public void run() {
+                event.getEntity().spigot().respawn();
+            }
+        }.runTaskLater(plugin, 2);
+    }
+
+    @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         if (event.getView().getTitle().equalsIgnoreCase(ChatColor.RED+""+ChatColor.BOLD+"Select your kit.")) {
-            for (Map.Entry entry : plugin.kits.entrySet()) {
-                KitManager gotKit = (KitManager) entry.getValue();
-                player.sendMessage(ChatColor.RED+"This feature is not complete!");
-                event.setCancelled(true);
+            int slot = event.getSlot();
+            String gotItem = ChatColor.stripColor(event.getWhoClicked().getInventory().getItem(slot).getItemMeta().getDisplayName());
+            KitManager gotKit = plugin.kits.get(gotItem);
+            if (!team.hasPlayer(player)) {
+                team.addPlayer(player);
+                Teams.Team pteam = team.getTeam(player);
+                if (pteam == Teams.Team.BLUE) {
+                    ItemStack item = new ItemStack(Material.LIGHT_BLUE_TERRACOTTA, 1);
+                    ItemMeta meta = item.getItemMeta();
+                    meta.setDisplayName(ChatColor.translateAlternateColorCodes('&',"&9&lBlue Team"));
+                    item.setItemMeta(meta);
+                    player.getInventory().setHelmet(item);
+                    player.sendMessage(ChatColor.BLUE +"You have joined the blue team!");
+                    String arena = plugin.currentArena;
+                    ArenaManager gotArena = plugin.arenas.get(arena);
+                    player.teleport(gotArena.getBlueSpawn());
+                } else {
+                    ItemStack item = new ItemStack(Material.RED_TERRACOTTA, 1);
+                    ItemMeta meta = item.getItemMeta();
+                    meta.setDisplayName(ChatColor.translateAlternateColorCodes('&',"&c&lRed Team"));
+                    item.setItemMeta(meta);
+                    player.getInventory().setHelmet(item);
+                    player.sendMessage(ChatColor.RED+"You have joined the red team!");
+                    String arena = plugin.currentArena;
+                    ArenaManager gotArena = plugin.arenas.get(arena);
+                    player.teleport(gotArena.getRedSpawn());
+                }
             }
+            plugin.giveKit(player, gotKit);
+            return;
         }
     }
 
@@ -164,30 +198,9 @@ public class EventClass implements Listener {
             @Override
             public void run() {
 
-                ScoreboardManager manager = Bukkit.getScoreboardManager();
-                Scoreboard sidebar = manager.getNewScoreboard();
-                Objective obj = sidebar.registerNewObjective("Scoreboard", "dummy");
+                plugin.updateScoreboard(e.getPlayer());
 
-
-                obj.setDisplayName("  §b§lPaintShot §8[§6" + Bukkit.getOnlinePlayers().size() + "§8/§6" + Bukkit.getServer().getMaxPlayers() + "§8]");
-                obj.setDisplaySlot(DisplaySlot.SIDEBAR);
-
-                obj.getScore("§aTime Left:").setScore(plugin.timer);
-                obj.getScore(" ").setScore(-1);
-                obj.getScore("§9/join").setScore(-2);
-                obj.getScore("§bServer IP in here idek.").setScore(-3);
-                e.getPlayer().setScoreboard(sidebar);
             }
         }.runTaskTimer(plugin, 1, 20); //20 incase is the amount of ticks. 20 = 1 second
-    }
-
-    @EventHandler
-    public void TeamJ(PlayerJoinEvent e) {
-        Player player = e.getPlayer();
-        if (team.hasPlayer(player)) {
-            Bukkit.broadcastMessage("nerd");
-        } else {
-            Bukkit.getServer().broadcastMessage("this kid doesn't have a team. what a nerd.");
-        }
     }
 }
