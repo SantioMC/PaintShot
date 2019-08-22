@@ -12,6 +12,7 @@ import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -62,7 +63,7 @@ public class EventClass implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
             Player player = event.getPlayer();
-            if (player.getItemInHand().getType() == Material.WOODEN_HOE) {
+            if (player.getInventory().getItemInMainHand().getType() == Material.WOODEN_HOE) {
                 if (!(reload.contains(player.getName()))) {
                     player.playSound(player.getLocation(),Sound.ENTITY_SNOWBALL_THROW,1,1);
                     Snowball snowball = player.getWorld().spawn(player.getEyeLocation(), Snowball.class);
@@ -140,7 +141,7 @@ public class EventClass implements Listener {
     public void onDamage(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player) {
             Player attacker = (Player) event.getDamager();
-            if (!(attacker.getItemInHand().getType() == Material.WOODEN_SWORD)) {
+            if (!(attacker.getInventory().getItemInMainHand().getType() == Material.WOODEN_SWORD)) {
                 event.setCancelled(true);
             }
         } else {
@@ -198,6 +199,21 @@ public class EventClass implements Listener {
             }
             plugin.giveKit(player, gotKit);
             return;
+        }
+    }
+
+    @EventHandler
+    public void onBreak(BlockBreakEvent event) {
+        if (event.getBlock().getType() == Material.LIGHT_BLUE_WOOL || event.getBlock().getType().equals(Material.RED_WOOL) || event.getBlock().getType().equals(Material.WHITE_WOOL)) {
+            if (event.getPlayer().getGameMode() != GameMode.CREATIVE) {
+                event.setCancelled(true);
+                event.getPlayer().getInventory().addItem(new ItemStack(Material.WHITE_WOOL, 1));
+                event.getBlock().setType(Material.AIR);
+            }
+        } else {
+            if (event.getPlayer().getGameMode() != GameMode.CREATIVE) {
+                event.setCancelled(true);
+            }
         }
     }
 

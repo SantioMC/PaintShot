@@ -44,10 +44,6 @@ public final class PaintShot extends JavaPlugin implements Listener {
         instance = this;
         timer = 180; // Allows the plugin to be reloaded
 
-        // Setup Configuration
-        saveDefaultConfig();
-        getConfig().options().copyDefaults(true);
-
         // Register Events
         Bukkit.getServer().getPluginManager().registerEvents(new EventClass(), this);
 
@@ -85,32 +81,46 @@ public final class PaintShot extends JavaPlugin implements Listener {
             public void run() {
                 if (timer <= 0) {
                     timer = 180; // Holder
+                    arenas.get(currentArena).resetMap();
+                    currentArena = getRandomArena();
                 }
                 timer--;
             }
         }.runTaskTimerAsynchronously(this,0,20); // Run each 20 seconds
 
-        // Create Hologram
+        new BukkitRunnable() {
 
-        for (World w : Bukkit.getWorlds()) {
-            for (org.bukkit.entity.Entity e : w.getEntities()) {
-                if (e instanceof ArmorStand) {
-                    e.remove();
+            @Override
+            public void run() {
+
+                // Setup Configuration
+                saveDefaultConfig();
+                getConfig().options().copyDefaults(true);
+
+                // Create Hologram
+
+                for (World w : Bukkit.getWorlds()) {
+                    for (org.bukkit.entity.Entity e : w.getEntities()) {
+                        if (e instanceof ArmorStand) {
+                            e.remove();
+                        }
+                    }
                 }
+
+                Location location = new Location(Bukkit.getWorld("default"), 0, 81, 0);
+                createHologram(location, ChatColor.BLUE+"/join");
+
+                // Initiate
+
+                updateArenas();
+
+                // Set Arena and Reset
+
+                currentArena = getRandomArena();
+                arenas.get(currentArena).resetMap();
+
             }
-        }
-
-        Location location = new Location(Bukkit.getWorld("default"), 0, 81, 0);
-        createHologram(location, ChatColor.BLUE+"/join");
-
-        // Initiate
-
-        updateArenas();
-
-        // Set Arena and Reset
-
-        currentArena = getRandomArena();
-        arenas.get(currentArena).resetMap();
+        }.runTaskLater(this, 100);
 
     }
 
@@ -161,10 +171,10 @@ public final class PaintShot extends JavaPlugin implements Listener {
         for (ItemStack item : kit.getItems()) {
             player.getInventory().addItem(item);
         }
+        player.getInventory().addItem(new ItemStack(Material.WHITE_WOOL, kit.getWoolCount()));
         if (kit.getPotion() != null) {
             player.addPotionEffect(new PotionEffect(kit.getPotion(), 1000000,0));
         }
-        player.getInventory().addItem(new ItemStack(Material.WHITE_WOOL, kit.getWoolCount()));
     }
 
     public void createHologram(Location location, String message) {

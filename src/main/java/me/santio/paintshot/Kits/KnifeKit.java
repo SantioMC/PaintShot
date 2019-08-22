@@ -22,9 +22,9 @@ public class KnifeKit {
         items.add(pistol);
         ItemStack knife = new ItemStack(Material.WOODEN_SWORD,1);
         ItemMeta knifeMeta = knife.getItemMeta();
-        pistolMeta.setDisplayName(ChatColor.GOLD+"Knife");
-        pistol.setItemMeta(pistolMeta);
-        items.add(pistol);
+        knifeMeta.setDisplayName(ChatColor.GOLD+"Knife");
+        knife.setItemMeta(pistolMeta);
+        items.add(knife);
         kitManager.setItems(items);
         plugin.kits.put("Knife",kitManager);
     }

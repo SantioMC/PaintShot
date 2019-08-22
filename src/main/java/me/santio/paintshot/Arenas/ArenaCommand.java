@@ -54,6 +54,7 @@ public class ArenaCommand implements CommandExecutor {
 
             Location spawn = new Location(Bukkit.getWorld("default"),0,81,0);
             ArenaManager arena = new ArenaManager(args[1], true, spawn, spawn, spawn);
+            plugin.updateArenas();
             player.sendMessage(ChatColor.GREEN+"Arena created! Edit it by using /arena");
             player.sendMessage(ChatColor.RED+"This arena is restricted, use /arena restrict "+args[1]+" to un-restrict it!");
 
