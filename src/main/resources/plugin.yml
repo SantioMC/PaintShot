@@ -17,3 +17,6 @@ commands:
     description: Resets all maps around you!
   arena:
     description: Main command to manage arenas
+  team:
+    aliases: ["teamuser"]
+    description: Main command to manage teams

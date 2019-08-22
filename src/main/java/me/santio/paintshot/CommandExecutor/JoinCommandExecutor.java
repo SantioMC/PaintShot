@@ -1,5 +1,6 @@
-package me.santio.paintshot;
+package me.santio.paintshot.CommandExecutor;
 
+import me.santio.paintshot.PaintShot;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

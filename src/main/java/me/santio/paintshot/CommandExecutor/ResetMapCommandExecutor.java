@@ -1,12 +1,13 @@
-package me.santio.paintshot;
+package me.santio.paintshot.CommandExecutor;
 
+import me.santio.paintshot.PaintShot;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class SetLobbyCommandExecutor implements CommandExecutor {
+public class ResetMapCommandExecutor implements CommandExecutor {
 
     PaintShot plugin = PaintShot.instance;
 
@@ -19,14 +20,13 @@ public class SetLobbyCommandExecutor implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        if (!(player.hasPermission("paintshot.setlobby"))) {
+        if (!(player.hasPermission("paintshot.reset"))) {
             player.sendMessage(ChatColor.RED+"You are not permitted to execute this command!");
             return true;
         }
-
-        plugin.save("lobbySpawn",player.getLocation());
-        player.sendMessage(ChatColor.GREEN+"The lobby was set to your location!");
-
+        player.sendMessage(ChatColor.GRAY+"Resetting map...");
+        plugin.resetMap(player.getLocation());
+        player.sendMessage(ChatColor.GREEN+"Map reset!");
         return true;
     }
 }

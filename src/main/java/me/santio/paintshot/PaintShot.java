@@ -2,12 +2,16 @@ package me.santio.paintshot;
 
 import me.santio.paintshot.Arenas.ArenaCommand;
 import me.santio.paintshot.Arenas.ArenaManager;
+import me.santio.paintshot.CommandExecutor.JoinCommandExecutor;
+import me.santio.paintshot.CommandExecutor.ResetMapCommandExecutor;
+import me.santio.paintshot.CommandExecutor.SetLobbyCommandExecutor;
 import me.santio.paintshot.Kits.*;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
@@ -43,13 +47,6 @@ public final class PaintShot extends JavaPlugin implements Listener {
         // Setup Configuration
         saveDefaultConfig();
         getConfig().options().copyDefaults(true);
-
-        updateArenas();
-
-        // Set Arena and Reset
-
-        currentArena = getRandomArena();
-        arenas.get(currentArena).resetMap();
 
         // Register Events
         Bukkit.getServer().getPluginManager().registerEvents(new EventClass(), this);
@@ -94,8 +91,25 @@ public final class PaintShot extends JavaPlugin implements Listener {
 
         // Create Hologram
 
+        for (World w : Bukkit.getWorlds()) {
+            for (org.bukkit.entity.Entity e : w.getEntities()) {
+                if (e instanceof ArmorStand) {
+                    e.remove();
+                }
+            }
+        }
+
         Location location = new Location(Bukkit.getWorld("default"), 0, 81, 0);
         createHologram(location, ChatColor.BLUE+"/join");
+
+        // Initiate
+
+        updateArenas();
+
+        // Set Arena and Reset
+
+        currentArena = getRandomArena();
+        arenas.get(currentArena).resetMap();
 
     }
 
