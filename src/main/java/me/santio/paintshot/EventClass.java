@@ -14,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -151,10 +152,19 @@ public class EventClass implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
+        if (event.getSlotType().equals(InventoryType.SlotType.ARMOR)) {
+            if (player.getGameMode().equals(GameMode.SURVIVAL)) {
+                event.setCancelled(true);
+                return;
+            }
+        }
         if (event.getView().getTitle().equalsIgnoreCase(ChatColor.RED+""+ChatColor.BOLD+"Select your kit.")) {
+            event.setCancelled(true);
             int slot = event.getSlot();
-            String gotItem = ChatColor.stripColor(event.getWhoClicked().getInventory().getItem(slot).getItemMeta().getDisplayName());
+            String gotItem = ChatColor.stripColor(event.getClickedInventory().getItem(slot).getItemMeta().getDisplayName());
             KitManager gotKit = plugin.kits.get(gotItem);
+            String arena = plugin.currentArena;
+            ArenaManager gotArena = plugin.arenas.get(arena);
             if (!team.hasPlayer(player)) {
                 team.addPlayer(player);
                 Teams.Team pteam = team.getTeam(player);
@@ -165,8 +175,6 @@ public class EventClass implements Listener {
                     item.setItemMeta(meta);
                     player.getInventory().setHelmet(item);
                     player.sendMessage(ChatColor.BLUE +"You have joined the blue team!");
-                    String arena = plugin.currentArena;
-                    ArenaManager gotArena = plugin.arenas.get(arena);
                     player.teleport(gotArena.getBlueSpawn());
                 } else {
                     ItemStack item = new ItemStack(Material.RED_TERRACOTTA, 1);
@@ -175,8 +183,6 @@ public class EventClass implements Listener {
                     item.setItemMeta(meta);
                     player.getInventory().setHelmet(item);
                     player.sendMessage(ChatColor.RED+"You have joined the red team!");
-                    String arena = plugin.currentArena;
-                    ArenaManager gotArena = plugin.arenas.get(arena);
                     player.teleport(gotArena.getRedSpawn());
                 }
             }
