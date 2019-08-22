@@ -36,6 +36,7 @@ public class ArenaCommand implements CommandExecutor {
             player.sendMessage(ChatColor.BLUE+"/arena center <name> "+ChatColor.GRAY+"Sets the center");
             player.sendMessage(ChatColor.BLUE+"/arena restrict <name> "+ChatColor.GRAY+"Toggles restricted access");
             player.sendMessage(ChatColor.BLUE+"/arena delete <name> "+ChatColor.GRAY+"Delete an arena");
+            player.sendMessage(ChatColor.BLUE+"/arena reload "+ChatColor.GRAY+"Add all changes to config");
             player.sendMessage(ChatColor.BLUE+"/arena list "+ChatColor.GRAY+"List all arenas");
             player.sendMessage(ChatColor.GRAY+"--------------");
             return true;
