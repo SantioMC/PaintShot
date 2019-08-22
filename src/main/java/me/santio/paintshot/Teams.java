@@ -32,4 +32,8 @@ public class Teams {
     public boolean hasPlayer(Player p) {
         return players.containsKey(p.getName());
     }
+
+    public void removePlayer(Player p) {
+        players.remove(p.getName());
+    }
 }

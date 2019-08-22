@@ -39,6 +39,7 @@ public class EventClass implements Listener {
         }
         player.setGameMode(GameMode.ADVENTURE);
         player.setFlying(false);
+        player.setHealth(20);
         event.setJoinMessage(ChatColor.DARK_GRAY+"["+ChatColor.GREEN+"+"+ChatColor.DARK_GRAY+"]"+ChatColor.AQUA+" "+player.getDisplayName());
     }
 
