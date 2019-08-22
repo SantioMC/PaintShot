@@ -57,6 +57,7 @@ public final class PaintShot extends JavaPlugin implements Listener {
         this.getCommand("kits").setExecutor(new JoinCommandExecutor());
         this.getCommand("play").setExecutor(new JoinCommandExecutor());
         this.getCommand("enter").setExecutor(new JoinCommandExecutor());
+        this.getCommand("arena").setTabCompleter(new ArenaTabCompleter());
 
         this.getCommand("setspawn").setExecutor(new SetLobbyCommandExecutor());
         this.getCommand("setlobby").setExecutor(new SetLobbyCommandExecutor());
