@@ -146,8 +146,13 @@ public class ArenaCommand implements CommandExecutor {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&',"&8&m-------------------"));
 
 
+        } else if (args[0].equalsIgnoreCase("reload")) {
+
+            plugin.updateArenas();
+            player.sendMessage(ChatColor.GREEN+"Reloaded!");
+
+
         }
-        plugin.updateArenas();
         return true;
     }
 }
