@@ -30,6 +30,6 @@ public class Teams {
     }
 
     public boolean hasPlayer(Player p) {
-        return players.keySet().contains(p.getName());
+        return players.containsKey(p.getName());
     }
 }

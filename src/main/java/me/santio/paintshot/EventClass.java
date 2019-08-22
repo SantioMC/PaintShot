@@ -15,10 +15,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -85,6 +82,18 @@ public class EventClass implements Listener {
                 block.setType(Material.AIR);
                 event.getPlayer().getInventory().addItem(new ItemStack(Material.WHITE_STAINED_GLASS,1));
             }
+        }
+    }
+
+    @EventHandler
+    public void onChat(AsyncPlayerChatEvent event) {
+        event.setCancelled(true);
+        if (!team.hasPlayer(event.getPlayer())) {
+            Bukkit.broadcastMessage(ChatColor.GRAY+"[Spectator] "+event.getPlayer().getName()+ChatColor.GRAY+": "+ChatColor.WHITE+event.getMessage());
+        } else if (team.getTeam(event.getPlayer()) == Teams.Team.BLUE) {
+            Bukkit.broadcastMessage(ChatColor.BLUE+"[Blue] "+event.getPlayer().getName()+ChatColor.GRAY+": "+ChatColor.WHITE+event.getMessage());
+        } else {
+            Bukkit.broadcastMessage(ChatColor.RED+"[Red] "+event.getPlayer().getName()+ChatColor.GRAY+": "+ChatColor.WHITE+event.getMessage());
         }
     }
 
