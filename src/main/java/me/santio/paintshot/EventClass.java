@@ -177,7 +177,7 @@ public class EventClass implements Listener {
             KitManager gotKit = plugin.kits.get(gotItem);
             String arena = plugin.currentArena;
             ArenaManager gotArena = plugin.arenas.get(arena);
-            if (!team.getTeam(player).equals(Teams.Team.SPECTATOR)) {
+            if (team.getTeam(player).equals(Teams.Team.SPECTATOR)) {
                 team.addPlayer(player);
                 Teams.Team pteam = team.getTeam(player);
                 if (pteam == Teams.Team.BLUE) {
