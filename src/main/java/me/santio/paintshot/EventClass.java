@@ -170,6 +170,7 @@ public class EventClass implements Listener {
                 return;
             }
         }
+
         if (event.getView().getTitle().equalsIgnoreCase(ChatColor.RED+""+ChatColor.BOLD+"Select your kit.")) {
             event.setCancelled(true);
             int slot = event.getSlot();
