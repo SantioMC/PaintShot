@@ -10,7 +10,6 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="PaintShot" target="1.8" />
       <module name="PaintShot_Discord_Bot.main" target="1.8" />
       <module name="PaintShot_Discord_Bot.test" target="1.8" />
     </bytecodeTargetLevel>

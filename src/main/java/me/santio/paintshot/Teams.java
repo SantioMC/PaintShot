@@ -1,5 +1,6 @@
 package me.santio.paintshot;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -33,7 +34,12 @@ public class Teams {
         return players.containsKey(p.getName());
     }
 
-    public void removePlayer(Player p) {
-        players.remove(p.getName());
+    public Team removePlayer(Player p) {
+        return players.remove(p.getName());
+    }
+
+    public Team setTeam(Player p, Team team) {
+        if(!hasPlayer(p)) return players.put(p.getName(), team);
+        else return players.put(p.getName(), team);
     }
 }

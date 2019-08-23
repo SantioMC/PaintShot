@@ -5,6 +5,7 @@ import me.santio.paintshot.Arenas.ArenaManager;
 import me.santio.paintshot.CommandExecutor.JoinCommandExecutor;
 import me.santio.paintshot.CommandExecutor.ResetMapCommandExecutor;
 import me.santio.paintshot.CommandExecutor.SetLobbyCommandExecutor;
+import me.santio.paintshot.CommandExecutor.TeamCommandExecutor;
 import me.santio.paintshot.Kits.*;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -32,6 +33,7 @@ public final class PaintShot extends JavaPlugin implements Listener {
 
     int timer;
     public static PaintShot instance;
+    Teams teams = new Teams();
 
     public HashMap<String, KitManager> kits = new HashMap<>();
     public HashMap<String, ArenaManager> arenas = new HashMap<>();
@@ -54,6 +56,7 @@ public final class PaintShot extends JavaPlugin implements Listener {
         this.getCommand("play").setExecutor(new JoinCommandExecutor());
         this.getCommand("enter").setExecutor(new JoinCommandExecutor());
         this.getCommand("arena").setTabCompleter(new ArenaTabCompleter());
+        this.getCommand("team").setExecutor(new TeamCommandExecutor());
 
         this.getCommand("setspawn").setExecutor(new SetLobbyCommandExecutor());
         this.getCommand("setlobby").setExecutor(new SetLobbyCommandExecutor());
@@ -72,6 +75,7 @@ public final class PaintShot extends JavaPlugin implements Listener {
         Glass.createKit();
         KnifeKit Knife = new KnifeKit();
         Knife.createKit();
+
 
         // Timer Countdown
 
@@ -126,6 +130,7 @@ public final class PaintShot extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
+        updateArenas();
         saveConfig();
     }
 
@@ -142,6 +147,7 @@ public final class PaintShot extends JavaPlugin implements Listener {
         }
     }
 
+
     public void updateScoreboard(Player player) {
         ScoreboardManager manager = Bukkit.getScoreboardManager();
         Scoreboard sidebar = manager.getNewScoreboard();
@@ -156,6 +162,7 @@ public final class PaintShot extends JavaPlugin implements Listener {
         obj.getScore("§9/join").setScore(-2);
         obj.getScore("§bServer IP in here idek.").setScore(-3);
         player.setScoreboard(sidebar);
+
     }
 
     public String getRandomArena() {
@@ -188,6 +195,11 @@ public final class PaintShot extends JavaPlugin implements Listener {
     }
 
     public void save(String key, Object value) {
+        this.getConfig().set(key, value);
+        saveConfig();
+    }
+
+    public void remove(String key, Object value) {
         this.getConfig().set(key, value);
         saveConfig();
     }

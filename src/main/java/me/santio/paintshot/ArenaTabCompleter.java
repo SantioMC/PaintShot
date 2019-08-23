@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class ArenaTabCompleter implements TabCompleter {
+
+    PaintShot plugin = PaintShot.instance;
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
         ArrayList<String> sub = new ArrayList<String>();
@@ -26,6 +28,16 @@ public class ArenaTabCompleter implements TabCompleter {
 
             Collections.sort(sub);
             return sub;
+        } else if (strings.length == 2) {
+            for (Object arenaN : plugin.arenas.keySet().toArray()) {
+                String arena = (String) arenaN;
+                arenas.add(arena);
+
+            }
+            Collections.sort(arenas);
+            return arenas;
+        } else if(strings.length >= 2) {
+            return null;
         }
 
         return null;

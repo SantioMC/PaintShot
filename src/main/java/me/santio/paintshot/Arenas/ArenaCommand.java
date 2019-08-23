@@ -120,24 +120,37 @@ public class ArenaCommand implements CommandExecutor {
         } else if (args[0].equalsIgnoreCase("restrict")) {
 
             if (args.length < 2) {
-                player.sendMessage(ChatColor.RED+"/arena " +args[0]+ " <name>");
+                player.sendMessage(ChatColor.RED + "/arena " + args[0] + " <name>");
                 return true;
             }
-            if (!(plugin.isSet("arena."+args[1]))) {
-                player.sendMessage(ChatColor.RED+"That arena does not exist!");
+            if (!(plugin.isSet("arena." + args[1]))) {
+                player.sendMessage(ChatColor.RED + "That arena does not exist!");
                 return true;
             }
 
-            Boolean restricted = (Boolean) plugin.get("arena."+args[1]+".restricted");
+            Boolean restricted = (Boolean) plugin.get("arena." + args[1] + ".restricted");
 
             Boolean restrict = !restricted;
-            plugin.save("arena."+args[1]+".restricted",restrict);
+            plugin.save("arena." + args[1] + ".restricted", restrict);
             ArenaManager arena = plugin.arenas.get(args[1]);
             arena.setRestricted(restrict);
 
-            player.sendMessage(ChatColor.GREEN+"Set the restricted state for "+args[1]+" to " + (restrict ? "ON" : "OFF"));
+            player.sendMessage(ChatColor.GREEN + "Set the restricted state for " + args[1] + " to " + (restrict ? "ON" : "OFF"));
+        } else if(args[0].equalsIgnoreCase("delete")) {
 
+            if (args.length < 2) {
+                player.sendMessage(ChatColor.RED + "/arena " + args[0] + " <name>");
+                return true;
+            }
+            if(!(plugin.isSet("arena." + args[1]))) {
+                player.sendMessage(ChatColor.RED + "That arena does not exist!");
+                return true;
+            }
 
+            plugin.remove("arena." + args[1], null);
+            plugin.updateArenas();
+
+            player.sendMessage(ChatColor.GREEN + "Arena " + args[1] + " has been deleted!");
         } else if (args[0].equalsIgnoreCase("list")) {
 
             player.sendMessage(ChatColor.translateAlternateColorCodes('&',"&8&m-------------------"));
