@@ -12,7 +12,6 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
@@ -33,6 +32,7 @@ public final class PaintShot extends JavaPlugin implements Listener {
 
     int timer;
     public static PaintShot instance;
+    public Teams team = new Teams();
 
     public HashMap<String, KitManager> kits = new HashMap<>();
     public HashMap<String, ArenaManager> arenas = new HashMap<>();
@@ -130,6 +130,7 @@ public final class PaintShot extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
+        updateArenas();
         saveConfig();
     }
 

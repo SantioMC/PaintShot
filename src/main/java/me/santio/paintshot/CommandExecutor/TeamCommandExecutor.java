@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 public class TeamCommandExecutor implements CommandExecutor {
     PaintShot plugin = PaintShot.instance;
 
-    Teams team = new Teams();
+    Teams team = plugin.team;
 
 
     @Override

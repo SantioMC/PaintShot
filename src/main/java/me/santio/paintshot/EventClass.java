@@ -6,7 +6,6 @@ import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
@@ -28,7 +27,7 @@ public class EventClass implements Listener {
 
     PaintShot plugin = PaintShot.instance;
 
-    Teams team = new Teams();
+    Teams team = plugin.team;
 
     ArrayList<String> reload = new ArrayList<>();
 
@@ -92,7 +91,7 @@ public class EventClass implements Listener {
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
         event.setCancelled(true);
-        if (!team.hasPlayer(event.getPlayer())) {
+        if (team.getTeam(event.getPlayer()) == Teams.Team.SPECTATOR) {
             Bukkit.broadcastMessage(ChatColor.GRAY+"[Spectator] "+event.getPlayer().getName()+ChatColor.GRAY+": "+ChatColor.WHITE+event.getMessage());
         } else if (team.getTeam(event.getPlayer()) == Teams.Team.BLUE) {
             Bukkit.broadcastMessage(ChatColor.BLUE+"[Blue] "+event.getPlayer().getName()+ChatColor.GRAY+": "+ChatColor.WHITE+event.getMessage());
@@ -178,7 +177,7 @@ public class EventClass implements Listener {
             KitManager gotKit = plugin.kits.get(gotItem);
             String arena = plugin.currentArena;
             ArenaManager gotArena = plugin.arenas.get(arena);
-            if (!team.hasPlayer(player)) {
+            if (!team.getTeam(player).equals(Teams.Team.SPECTATOR)) {
                 team.addPlayer(player);
                 Teams.Team pteam = team.getTeam(player);
                 if (pteam == Teams.Team.BLUE) {
@@ -228,6 +227,7 @@ public class EventClass implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
+        team.setTeam(e.getPlayer(), Teams.Team.SPECTATOR);
         new BukkitRunnable() {
             @Override
             public void run() {

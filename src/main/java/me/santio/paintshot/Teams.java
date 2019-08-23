@@ -8,7 +8,8 @@ import java.util.HashMap;
 public class Teams {
     public static Teams instance;
 
-    public enum Team { RED, BLUE }
+    public enum Team { RED, BLUE, SPECTATOR }
+
     private HashMap<String, Team> players = new HashMap<String, Team>();
 
 
@@ -30,16 +31,15 @@ public class Teams {
         else return Team.RED;
     }
 
-    public boolean hasPlayer(Player p) {
-        return players.containsKey(p.getName());
+    public boolean hasPlayer(Player p) { p.sendMessage(ChatColor.BLUE+"[DEBUG] Got team - "+players.toString() + " - "+players.keySet().contains(p.getName())); return players.keySet().contains(p.getName()); }
+
+    public void removePlayer(Player p) {
+        setTeam(p, Team.SPECTATOR);
     }
 
-    public Team removePlayer(Player p) {
-        return players.remove(p.getName());
-    }
-
-    public Team setTeam(Player p, Team team) {
-        if (hasPlayer(p)) players.remove(p.getName());
-        return players.put(p.getName(), team);
+    public void setTeam(Player p, Team team) {
+        p.sendMessage(ChatColor.BLUE+"[DEBUG] "+p.getName()+" - "+team.toString());
+        players.put(p.getName(), team);
+        p.sendMessage(ChatColor.BLUE+"[DEBUG] Added team - "+players.toString());
     }
 }
