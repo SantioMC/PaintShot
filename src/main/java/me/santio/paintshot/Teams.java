@@ -9,7 +9,6 @@ public class Teams {
     public static Teams instance;
 
     public enum Team { RED, BLUE, SPECTATOR }
-
     private HashMap<String, Team> players = new HashMap<String, Team>();
 
 
@@ -31,7 +30,9 @@ public class Teams {
         else return Team.RED;
     }
 
-    public boolean hasPlayer(Player p) { p.sendMessage(ChatColor.BLUE+"[DEBUG] Got team - "+players.toString() + " - "+players.keySet().contains(p.getName())); return players.keySet().contains(p.getName()); }
+    public boolean hasPlayer(Player p) {
+        p.sendMessage(ChatColor.BLUE+"[DEBUG] Got team - "+players.toString() + " - "+players.keySet().contains(p.getName())); return players.keySet().contains(p.getName());
+    }
 
     public void removePlayer(Player p) {
         setTeam(p, Team.SPECTATOR);
