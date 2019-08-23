@@ -136,7 +136,12 @@ public class EventClass implements Listener {
 
             if (event.getHitEntity() != null) {
                 if (event.getHitEntity() instanceof Player) {
-                    ((Player) event.getHitEntity()).damage(4);
+                    Player target = (Player) event.getHitEntity();
+                    if (team.getTeam(target) == team.getTeam(player)) {
+                        event.getEntity().remove();
+                        return;
+                    }
+                    target.damage(4);
                     event.getEntity().remove();
                 }
             }
