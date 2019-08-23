@@ -126,6 +126,10 @@ public final class PaintShot extends JavaPlugin implements Listener {
             }
         }.runTaskLater(this, 100);
 
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            team.setTeam(player, Teams.Team.SPECTATOR);
+        }
+
     }
 
     @Override
@@ -257,14 +261,17 @@ public final class PaintShot extends JavaPlugin implements Listener {
     public void resetMap(Location location) {
         ArrayList<Block> blocks = getBlocks(location,50);
         for (Block block : blocks) {
-            if (block.getType() == Material.LIGHT_BLUE_TERRACOTTA) {
+            if (block.getType() == Material.LIGHT_BLUE_TERRACOTTA || block.getType() == Material.PINK_TERRACOTTA) {
                 block.setType(Material.WHITE_TERRACOTTA);
-            } else if (block.getType() == Material.LIGHT_BLUE_STAINED_GLASS_PANE) {
+            } else if (block.getType() == Material.LIGHT_BLUE_STAINED_GLASS_PANE || block.getType() == Material.RED_STAINED_GLASS_PANE) {
                 block.setType(Material.WHITE_STAINED_GLASS_PANE);
-            } else if (block.getType() == Material.LIGHT_BLUE_STAINED_GLASS) {
+            } else if (block.getType() == Material.LIGHT_BLUE_STAINED_GLASS || block.getType() == Material.RED_STAINED_GLASS) {
                 block.setType(Material.WHITE_STAINED_GLASS);
-            } else if (block.getType() == Material.LIGHT_BLUE_WOOL) {
+            } else if (block.getType() == Material.LIGHT_BLUE_WOOL || block.getType() == Material.RED_WOOL) {
                 block.setType(Material.WHITE_WOOL);
+            }
+            if (block.getType() == Material.WHITE_STAINED_GLASS || block.getType() == Material.WHITE_WOOL) {
+                block.setType(Material.AIR);
             }
         }
     }

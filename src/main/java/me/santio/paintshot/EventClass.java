@@ -100,26 +100,51 @@ public class EventClass implements Listener {
         }
     }
 
-    @EventHandler
-    public void onLand(ProjectileHitEvent event) {
-        if (event.getHitEntity() != null) {
-            if (event.getHitEntity() instanceof Player) {
-                ((Player) event.getHitEntity()).damage(4);
-                event.getEntity().remove();
+    public void colorBlock(Block block, Player player) {
+        if (block.getType() == Material.WHITE_TERRACOTTA) {
+            if (team.getTeam(player) == Teams.Team.BLUE) {
+                if (plugin.getChance(75)) block.setType(Material.LIGHT_BLUE_TERRACOTTA);
+            } else {
+                if (plugin.getChance(75)) block.setType(Material.PINK_TERRACOTTA);
+            }
+        } else if (block.getType() == Material.WHITE_STAINED_GLASS_PANE) {
+            if (team.getTeam(player) == Teams.Team.BLUE) {
+                if (plugin.getChance(75)) block.setType(Material.LIGHT_BLUE_STAINED_GLASS_PANE);
+            } else {
+                if (plugin.getChance(75)) block.setType(Material.RED_STAINED_GLASS_PANE);
+            }
+        } else if (block.getType() == Material.WHITE_STAINED_GLASS) {
+            if (team.getTeam(player) == Teams.Team.BLUE) {
+                if (plugin.getChance(75)) block.setType(Material.LIGHT_BLUE_STAINED_GLASS);
+            } else {
+                if (plugin.getChance(75)) block.setType(Material.RED_STAINED_GLASS);
+            }
+        } else if (block.getType() == Material.WHITE_WOOL) {
+            if (team.getTeam(player) == Teams.Team.BLUE) {
+                if (plugin.getChance(75)) block.setType(Material.LIGHT_BLUE_WOOL);
+            } else {
+                if (plugin.getChance(75)) block.setType(Material.RED_WOOL);
             }
         }
+    }
 
-        if (event.getHitBlock() != null) {
-            ArrayList<Block> blocks = plugin.getBlocks(event.getHitBlock().getLocation(), 1);
-            for (Block block : blocks) {
-                if (block.getType() == Material.WHITE_TERRACOTTA) {
-                    if (plugin.getChance(75)) block.setType(Material.LIGHT_BLUE_TERRACOTTA);
-                } else if (block.getType() == Material.WHITE_STAINED_GLASS_PANE) {
-                    if (plugin.getChance(75)) block.setType(Material.LIGHT_BLUE_STAINED_GLASS_PANE);
-                } else if (block.getType() == Material.WHITE_STAINED_GLASS) {
-                    if (plugin.getChance(75)) block.setType(Material.LIGHT_BLUE_STAINED_GLASS);
-                } else if (block.getType() == Material.WHITE_WOOL) {
-                    if (plugin.getChance(75)) block.setType(Material.LIGHT_BLUE_WOOL);
+    @EventHandler
+    public void onLand(ProjectileHitEvent event) {
+        if (event.getEntity().getShooter() != null) {
+
+            Player player = (Player) event.getEntity().getShooter();
+
+            if (event.getHitEntity() != null) {
+                if (event.getHitEntity() instanceof Player) {
+                    ((Player) event.getHitEntity()).damage(4);
+                    event.getEntity().remove();
+                }
+            }
+
+            if (event.getHitBlock() != null) {
+                ArrayList<Block> blocks = plugin.getBlocks(event.getHitBlock().getLocation(), 1);
+                for (Block block : blocks) {
+                    colorBlock(block, player);
                 }
             }
         }
