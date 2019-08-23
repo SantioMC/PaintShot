@@ -39,7 +39,7 @@ public class Teams {
     }
 
     public Team setTeam(Player p, Team team) {
-        if(!hasPlayer(p)) return players.put(p.getName(), team);
-        else return players.put(p.getName(), team);
+        if (hasPlayer(p)) players.remove(p.getName());
+        return players.put(p.getName(), team);
     }
 }

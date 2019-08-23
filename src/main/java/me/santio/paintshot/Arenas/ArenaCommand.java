@@ -147,7 +147,7 @@ public class ArenaCommand implements CommandExecutor {
                 return true;
             }
 
-            plugin.remove("arena." + args[1], null);
+            plugin.save("arena." + args[1], null);
             plugin.updateArenas();
 
             player.sendMessage(ChatColor.GREEN + "Arena " + args[1] + " has been deleted!");
