@@ -5,6 +5,7 @@ import me.santio.paintshot.Arenas.ArenaManager;
 import me.santio.paintshot.CommandExecutor.JoinCommandExecutor;
 import me.santio.paintshot.CommandExecutor.ResetMapCommandExecutor;
 import me.santio.paintshot.CommandExecutor.SetLobbyCommandExecutor;
+import me.santio.paintshot.CommandExecutor.TeamCommandExecutor;
 import me.santio.paintshot.Kits.*;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -61,8 +62,8 @@ public final class PaintShot extends JavaPlugin implements Listener {
         this.getCommand("resetmap").setExecutor(new ResetMapCommandExecutor());
         this.getCommand("reset").setExecutor(new ResetMapCommandExecutor());
 
-        this.getCommand("team").setExecutor(new ResetMapCommandExecutor());
-        this.getCommand("teamuser").setExecutor(new ResetMapCommandExecutor());
+        this.getCommand("team").setExecutor(new TeamCommandExecutor());
+        this.getCommand("teamuser").setExecutor(new TeamCommandExecutor());
 
         this.getCommand("arena").setExecutor(new ArenaCommand());
 
