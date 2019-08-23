@@ -101,25 +101,25 @@ public class EventClass implements Listener {
     }
 
     public void colorBlock(Block block, Player player) {
-        if (block.getType() == Material.WHITE_TERRACOTTA) {
+        if (block.getType() == Material.WHITE_TERRACOTTA || block.getType() == Material.LIGHT_BLUE_TERRACOTTA || block.getType() == Material.PINK_TERRACOTTA) {
             if (team.getTeam(player) == Teams.Team.BLUE) {
                 if (plugin.getChance(75)) block.setType(Material.LIGHT_BLUE_TERRACOTTA);
             } else {
                 if (plugin.getChance(75)) block.setType(Material.PINK_TERRACOTTA);
             }
-        } else if (block.getType() == Material.WHITE_STAINED_GLASS_PANE) {
+        } else if (block.getType() == Material.WHITE_STAINED_GLASS_PANE || block.getType() == Material.LIGHT_BLUE_STAINED_GLASS_PANE || block.getType() == Material.RED_STAINED_GLASS_PANE) {
             if (team.getTeam(player) == Teams.Team.BLUE) {
                 if (plugin.getChance(75)) block.setType(Material.LIGHT_BLUE_STAINED_GLASS_PANE);
             } else {
                 if (plugin.getChance(75)) block.setType(Material.RED_STAINED_GLASS_PANE);
             }
-        } else if (block.getType() == Material.WHITE_STAINED_GLASS) {
+        } else if (block.getType() == Material.WHITE_STAINED_GLASS || block.getType() == Material.LIGHT_BLUE_STAINED_GLASS || block.getType() == Material.RED_STAINED_GLASS) {
             if (team.getTeam(player) == Teams.Team.BLUE) {
                 if (plugin.getChance(75)) block.setType(Material.LIGHT_BLUE_STAINED_GLASS);
             } else {
                 if (plugin.getChance(75)) block.setType(Material.RED_STAINED_GLASS);
             }
-        } else if (block.getType() == Material.WHITE_WOOL) {
+        } else if (block.getType() == Material.WHITE_WOOL || block.getType() == Material.LIGHT_BLUE_WOOL || block.getType() == Material.RED_WOOL) {
             if (team.getTeam(player) == Teams.Team.BLUE) {
                 if (plugin.getChance(75)) block.setType(Material.LIGHT_BLUE_WOOL);
             } else {
