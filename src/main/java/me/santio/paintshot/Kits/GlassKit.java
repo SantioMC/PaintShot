@@ -20,8 +20,8 @@ public class GlassKit {
         pistol.setItemMeta(pistolMeta);
         ArrayList<ItemStack> items = new ArrayList<>();
         items.add(pistol);
-        items.add(new ItemStack(Material.GLASS,64));
-        items.add(new ItemStack(Material.GLASS,64));
+        items.add(new ItemStack(Material.WHITE_STAINED_GLASS,64));
+        items.add(new ItemStack(Material.WHITE_STAINED_GLASS,64));
         kitManager.setItems(items);
         plugin.kits.put("Glass",kitManager);
     }
