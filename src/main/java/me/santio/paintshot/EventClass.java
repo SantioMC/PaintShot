@@ -6,6 +6,7 @@ import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
@@ -47,6 +48,7 @@ public class EventClass implements Listener {
     @EventHandler
     public void onLeave(PlayerQuitEvent event) {
         Player player = event.getPlayer();
+        team.removePlayer(player);
         event.setQuitMessage(ChatColor.DARK_GRAY+"["+ChatColor.RED+"-"+ChatColor.DARK_GRAY+"]"+ChatColor.AQUA+" "+player.getDisplayName());
     }
 
@@ -109,7 +111,7 @@ public class EventClass implements Listener {
         }
 
         if (event.getHitBlock() != null) {
-            ArrayList<Block> blocks = plugin.getBlocks(event.getHitBlock().getLocation(),1);
+            ArrayList<Block> blocks = plugin.getBlocks(event.getHitBlock().getLocation(), 1);
             for (Block block : blocks) {
                 if (block.getType() == Material.WHITE_TERRACOTTA) {
                     if (plugin.getChance(75)) block.setType(Material.LIGHT_BLUE_TERRACOTTA);
@@ -233,6 +235,17 @@ public class EventClass implements Listener {
                 plugin.updateScoreboard(e.getPlayer());
 
             }
-        }.runTaskTimer(plugin, 1, 20); //20 incase is the amount of ticks. 20 = 1 second
+        }.runTaskTimer(plugin, 1, 20); //20 is the amount of ticks. 20 = 1 second
+    }
+
+    @EventHandler
+    public void onPlayerDropItem(PlayerDropItemEvent event) {
+        Player player = event.getPlayer();
+
+        if(player.getGameMode() == GameMode.SURVIVAL) {
+            event.setCancelled(true);
+        } else if(player.getGameMode() == GameMode.CREATIVE) {
+            event.setCancelled(false);
+        }
     }
 }
