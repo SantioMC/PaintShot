@@ -61,6 +61,9 @@ public final class PaintShot extends JavaPlugin implements Listener {
         this.getCommand("resetmap").setExecutor(new ResetMapCommandExecutor());
         this.getCommand("reset").setExecutor(new ResetMapCommandExecutor());
 
+        this.getCommand("team").setExecutor(new ResetMapCommandExecutor());
+        this.getCommand("teamuser").setExecutor(new ResetMapCommandExecutor());
+
         this.getCommand("arena").setExecutor(new ArenaCommand());
 
         // Register Kits
