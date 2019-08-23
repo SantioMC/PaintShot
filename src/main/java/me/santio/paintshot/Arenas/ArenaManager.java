@@ -21,9 +21,18 @@ public class ArenaManager {
         this.redSpawn = redSpawn;
         this.center = center;
         plugin.save("arena."+arenaName+".restricted", restricted);
-        plugin.save("arena."+arenaName+".blueSpawn", blueSpawn);
-        plugin.save("arena."+arenaName+".redSpawn", redSpawn);
-        plugin.save("arena."+arenaName+".center", center);
+
+        plugin.save("arena."+name+".blueSpawn.x",blueSpawn.getX());
+        plugin.save("arena."+name+".blueSpawn.y",blueSpawn.getY());
+        plugin.save("arena."+name+".blueSpawn.z",blueSpawn.getZ());
+
+        plugin.save("arena."+name+".redSpawn.x",redSpawn.getX());
+        plugin.save("arena."+name+".redSpawn.y",redSpawn.getY());
+        plugin.save("arena."+name+".redSpawn.z",redSpawn.getZ());
+
+        plugin.save("arena."+name+".center.x",center.getX());
+        plugin.save("arena."+name+".center.y",center.getY());
+        plugin.save("arena."+name+".center.z",center.getZ());
     }
 
     public void resetMap() {
