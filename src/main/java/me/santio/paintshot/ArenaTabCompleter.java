@@ -37,9 +37,8 @@ public class ArenaTabCompleter implements TabCompleter {
             Collections.sort(arenas);
             return arenas;
         } else if(strings.length >= 2) {
-            return null;
+            return plugin.Nothing;
         }
-
         return null;
     }
 }

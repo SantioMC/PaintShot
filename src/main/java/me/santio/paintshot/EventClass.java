@@ -182,11 +182,20 @@ public class EventClass implements Listener {
 
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
+        Player player = (Player) event.getEntity();
+        String arena = plugin.currentArena;
+        ArenaManager gotArena = plugin.arenas.get(arena);
         new BukkitRunnable() {
-
             @Override
             public void run() {
-                event.getEntity().spigot().respawn();
+                player.spigot().respawn();
+                if(team.getTeam(player) == Teams.Team.BLUE) {
+                    player.teleport(gotArena.getBlueSpawn());
+                } else if(team.getTeam(player) == Teams.Team.RED) {
+                    player.teleport(gotArena.getRedSpawn());
+                } else {
+                    player.teleport((Location) plugin.get("lobbySpawn"));
+                }
             }
         }.runTaskLater(plugin, 2);
     }
