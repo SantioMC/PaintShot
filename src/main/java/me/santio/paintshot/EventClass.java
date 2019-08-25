@@ -171,11 +171,12 @@ public class EventClass implements Listener {
     }
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
-        if (event.getDamager() instanceof Player) {
+        if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
             Player attacker = (Player) event.getDamager();
             if (!(attacker.getInventory().getItemInMainHand().getType() == Material.WOODEN_SWORD)) {
                 event.setCancelled(true);
             }
+            if (team.getTeam(attacker) == team.getTeam((Player) event.getEntity()));
         } else {
             event.setCancelled(true);
         }
