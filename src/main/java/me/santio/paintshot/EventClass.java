@@ -6,6 +6,7 @@ import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
@@ -286,6 +287,21 @@ public class EventClass implements Listener {
             event.setCancelled(true);
         } else if(player.getGameMode() == GameMode.CREATIVE) {
             event.setCancelled(false);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event) {
+        Player player = event.getPlayer();
+
+        if(team.getTeam(player) == Teams.Team.RED) {
+            if(player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.LIGHT_BLUE_TERRACOTTA) {
+                player.damage(1);
+            }
+        } else if(team.getTeam(player) == Teams.Team.BLUE) {
+            if(player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.PINK_TERRACOTTA) {
+                player.damage(1);
+            }
         }
     }
 }

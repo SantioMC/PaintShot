@@ -52,22 +52,17 @@ public final class PaintShot extends JavaPlugin implements Listener {
 
         // Register Commands
         this.getCommand("join").setExecutor(new JoinCommandExecutor());
-        this.getCommand("kit").setExecutor(new JoinCommandExecutor());
-        this.getCommand("kits").setExecutor(new JoinCommandExecutor());
-        this.getCommand("play").setExecutor(new JoinCommandExecutor());
-        this.getCommand("enter").setExecutor(new JoinCommandExecutor());
+
+        this.getCommand("arena").setExecutor(new ArenaCommand());
         this.getCommand("arena").setTabCompleter(new ArenaTabCompleter());
 
-        this.getCommand("setspawn").setExecutor(new SetLobbyCommandExecutor());
         this.getCommand("setlobby").setExecutor(new SetLobbyCommandExecutor());
 
         this.getCommand("resetmap").setExecutor(new ResetMapCommandExecutor());
-        this.getCommand("reset").setExecutor(new ResetMapCommandExecutor());
 
         this.getCommand("team").setExecutor(new TeamCommandExecutor());
-        this.getCommand("teamuser").setExecutor(new TeamCommandExecutor());
+        this.getCommand("team").setTabCompleter(new TeamTabCompleter());
 
-        this.getCommand("arena").setExecutor(new ArenaCommand());
 
         // Register Kits
         ExtraWoolKit ExtraWool = new ExtraWoolKit();

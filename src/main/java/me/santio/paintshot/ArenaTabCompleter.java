@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ArenaTabCompleter implements TabCompleter {
+public class ArenaTabCompleter  implements TabCompleter {
 
     PaintShot plugin = PaintShot.instance;
     @Override
